@@ -1,0 +1,1 @@
+import{_ as t}from"./_plugin-vue_export-helper-c27b6911.js";import{f as o,o as s,c as a,g as n,h as c,b as r,i as _}from"./app-1bcafb68.js";const l={},p=r("button",{class:"btn btn-primary"},"Clique",-1);function d(i,m,u,f,x,b){const e=o("H1");return s(),a("div",null,[n(e,null,{default:c(()=>[_("Ola mundo!")]),_:1}),p])}const B=t(l,[["render",d]]);export{B as default};

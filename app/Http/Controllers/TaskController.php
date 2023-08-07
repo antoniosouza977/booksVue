@@ -9,14 +9,19 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected TasksRepository $repository;
+
+    public function __construct()
+    {
+        $this->repository = new TasksRepository;
+    }
+
     public function index()
     {
-        $tasks = Task::all();
-        $lists = TaskList::all();
+        $user = Auth::user();
 
+        $tasks = $this->repository->getTasksFromUser($user);
+        $lists = $this->repository->getListsFromUser($user);
 
         return inertia('App',compact('tasks','lists'));
     }
@@ -34,13 +39,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $task = new Task;
-        $task->title = $request->title;
-        $task->priority = $request->priority;
-        $task->list_id = $request->list;
-        $task->user_id = Auth::id();
 
-        $task->save();
+        $this->repository->saveTask($request);
 
         return to_route('tarefas.index');
     }

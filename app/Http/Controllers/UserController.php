@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    protected TasksRepository $repository;
+
+    public function __construct()
+    {
+        $this->repository = new TasksRepository;
+    }
+
     function create()
     {
         return inertia('Auth/Register');
@@ -22,6 +29,8 @@ class UserController extends Controller
         ]);
 
         $user = User::create($request->only('name','email','password'));
+
+        $this->repository->createDefaultLists($user);
 
         Auth::login($user);
 

@@ -1,40 +1,37 @@
 <template>
     <div class="d-flex flex-row" style="width: 100vw; height: 100vh;">
         <div style="height: 100%;">
-            <Sidebar />
+            <Sidebar v-bind="$props"/>
         </div>
-        <div class="d-flex flex-row p-3">
-            <div class="col-6">
-                <ul class="list-group" v-for="task in tasks">
-                    <li class="list-group-item">
-                        {{ task }}
-                    </li>
-                </ul>
+        <div class="d-flex flex-row w-100 p-3">
+            <div class="col-6 border-end pe-3">
+                <TaskComponent v-bind="$props"/>
             </div>
             <div class="col-6">
                 <div class="h-70">
-                    <NewTaskForm v-bind="$props" />
+                    <!-- <NewTaskForm v-bind="$props" /> -->
+                    <slot />
+
                 </div>
-                <div class="h-30">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores delectus consectetur
-                    nesciunt culpa harum maxime quaerat voluptatem molestiae temporibus error? At doloribus facere maiores
-                    vel veniam, porro molestiae laudantium voluptas.</div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import Sidebar from '@/Components/Sidebar.vue'
-import NewTaskForm from '@/Components/NewTaskForm.vue'
+import Sidebar from '@/Components/Sidebar.vue';
+import NewTaskForm from '@/Components/NewTaskForm.vue';
+import TaskComponent from '@/Components/TaskComponent.vue';
 
 export default {
+    name: 'MainTemplate',
     props: {
         tasks: null,
-        lists: null
+        user : null
     },
     components: {
         Sidebar,
-        NewTaskForm
+        NewTaskForm,
+        TaskComponent
     }
 }
 </script>
-<style></style>

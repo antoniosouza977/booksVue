@@ -7,14 +7,21 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return redirect('/tarefas');
-    });
     
-    Route::get('/tarefas',[TaskController::class,'index'])
+    Route::get('/',[TaskController::class,'index'])
     ->name('tarefas.index');
+    Route::get('/criar',[TaskController::class,'create'])
+    ->name('tarefas.create');
     Route::post('/tarefas/criar',[TaskController::class,'store'])
     ->name('tarefas.store');
+    Route::post('/tarefas/deletar/{id}',[TaskController::class,'destroy'])
+    ->name('tarefas.destroy');
+    Route::get('/editar/{task}',[TaskController::class,'show'])
+    ->name('tarefas.show');
+    Route::post('/tarefas/editar/{task}',[TaskController::class,'edit'])
+    ->name('tarefas.edit');
+    Route::post('/tarefas/completar/{task}',[TaskController::class,'completeTask'])
+    ->name('tarefas.complete');
 });
 
 Route::get('/login',[LoginController::class,'create'])
@@ -25,7 +32,10 @@ Route::post('/login',[LoginController::class,'store'])
 Route::get('/registrar',[UserController::class,'create'])
 ->name('register'); 
 Route::post('/registrar',[UserController::class,'store'])
-->name('register.post');   
+->name('register.post');  
+
+Route::get('user',[UserController::class,'edit'])
+->name('user.edit');
 
 Route::post('/logout',[LoginController::class,'destroy'])
 ->name('logout');

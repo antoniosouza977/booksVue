@@ -20,6 +20,13 @@ class UserController extends Controller
         return inertia('Auth/Register');
     }
 
+    public function edit()
+    {
+        $user = Auth::user();
+
+        return inertia('Auth/Profile',compact('user'));
+    }
+
     function store (Request $request)
     {
         $request->validate([
@@ -29,8 +36,6 @@ class UserController extends Controller
         ]);
 
         $user = User::create($request->only('name','email','password'));
-
-        $this->repository->createDefaultLists($user);
 
         Auth::login($user);
 

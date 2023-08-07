@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('title',100);
             $table->tinyInteger('priority');
             $table->boolean('done')->default(false);
-            $table->foreignId('list_id')->constrained('lists');
             $table->foreignId('user_id')->constrained('users');
         });
     }

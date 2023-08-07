@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use App\Models\TaskList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,59 +20,57 @@ class TaskController extends Controller
         $user = Auth::user();
 
         $tasks = $this->repository->getTasksFromUser($user);
-        $lists = $this->repository->getListsFromUser($user);
 
-        return inertia('App',compact('tasks','lists'));
+        return inertia('App',
+        compact('tasks','user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $user = Auth::user();
+
+        $tasks = $this->repository->getTasksFromUser($user);
+
+        return inertia('CRUD/CreateTask',
+        compact('tasks','user'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
 
         $this->repository->saveTask($request);
 
-        return to_route('tarefas.index');
+        return back();
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Task $task)
     {
-        //
+        $user = Auth::user();
+
+        $tasks = $this->repository->getTasksFromUser($user);
+
+        return inertia('CRUD/EditTask',
+        compact('task','tasks','user'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Request $request, Task $task)
     {
-        //
+        $this->repository->updateTask($request, $task);
+
+        return back();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function completeTask(Task $task)
     {
-        //
+        $this->repository->completeTask($task);
+        
+        return back();
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        Task::destroy($id);
+
+        return redirect('/');
     }
 }
